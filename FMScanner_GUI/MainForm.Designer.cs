@@ -339,6 +339,7 @@
             this.Controls.Add(this.InputFilesListBox);
             this.Name = "MainForm";
             this.Text = "FMScanner GUI";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 
