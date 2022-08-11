@@ -23,8 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\AngelLoader\AL_Common\AL_Common.csproj" />
-    <ProjectReference Include="..\..\AngelLoader\FMScanner\FMScanner.csproj" />
+    <ProjectReference Include="..\AL_Common\AL_Common.csproj" />
+    <ProjectReference Include="..\FMScanner\FMScanner.csproj" />
   </ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">

@@ -13,6 +13,7 @@ using FMScanner;
 using FMScanner_GUI.Dialogs;
 using JetBrains.Annotations;
 using static AL_Common.Common;
+using static AL_Common.Logger;
 
 namespace FMScanner_GUI
 {
@@ -21,6 +22,8 @@ namespace FMScanner_GUI
         private readonly string ConfigFile = Path.Combine(Application.StartupPath, "Config.ini");
 
         private const string JsonFile = "FMScanner_output.json";
+
+        private readonly string LogFile = Path.Combine(Application.StartupPath, "log.txt");
 
         private void ReadConfig()
         {
@@ -65,6 +68,9 @@ namespace FMScanner_GUI
             InitializeComponent();
             ScanInfoLabel.Text = "";
             OutputFileNoteLabel.Text = "(output file will be '" + JsonFile + "')";
+
+            SetLogFile(LogFile);
+
             ReadConfig();
         }
 
@@ -341,9 +347,86 @@ namespace FMScanner_GUI
 
             try
             {
+                bool errors = false;
+                bool otherErrors = false;
+                var unsupportedCompressionErrors = new List<(FMToScan FM, ScannedFMDataAndError ScannedFMDataAndError)>();
+
+                for (int i = 0; i < fmsToScan.Count; i++)
+                {
+                    ScannedFMDataAndError item = fmDataList[i];
+                    if (item.Fen7zResult != null ||
+                        item.Exception != null ||
+                        !item.ErrorInfo.IsEmpty())
+                    {
+                        if (item.Exception is FMScanner.FastZipReader.ZipCompressionMethodException)
+                        {
+                            unsupportedCompressionErrors.Add((fmsToScan[i], item));
+                        }
+                        else
+                        {
+                            otherErrors = true;
+                        }
+
+                        errors = true;
+                    }
+                }
+
+                if (errors)
+                {
+                    if (unsupportedCompressionErrors.Count > 0)
+                    {
+                        if (unsupportedCompressionErrors.Count == 1)
+                        {
+                            MessageBox.Show(
+                                "The zip archive '"
+                                + unsupportedCompressionErrors[0].FM.Path +
+                                "' contains one or more files compressed with an unsupported compression method. " +
+                                "Only the DEFLATE method is supported. Try manually extracting and re-creating the zip archive.");
+                        }
+                        else
+                        {
+                            string msg =
+                                "One or more zip archives contain files compressed with unsupported compression methods. " +
+                                "Only the DEFLATE method is supported. Try manually extracting and re-creating the zip archives.\r\n\r\n" +
+                                "The following zip archives produced this error:\r\n\r\n";
+
+                            for (int errorI = 0; errorI < Math.Min(unsupportedCompressionErrors.Count, 10); errorI++)
+                            {
+                                msg += unsupportedCompressionErrors[errorI].FM.Path + "\r\n";
+                            }
+
+                            if (unsupportedCompressionErrors.Count > 10)
+                            {
+                                msg += "[See log.txt for the rest]";
+                            }
+
+                            if (otherErrors)
+                            {
+                                msg += "\r\n\r\nIn addition, one or more other errors occurred. See log.txt for details.";
+                            }
+
+                            MessageBox.Show(msg);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show(
+                            "One or more errors occurred while scanning. See log.txt for details.");
+                    }
+
+                    return;
+                }
+
                 for (int scannedI = 0; scannedI < fmDataList.Count; scannedI++)
                 {
                     ScannedFMDataAndError item = fmDataList[scannedI];
+
+                    if (item.Fen7zResult != null ||
+                        item.Exception != null ||
+                        !item.ErrorInfo.IsEmpty())
+                    {
+                    }
+
                     if (item.ScannedFMData == null) continue;
 
                     ScannedFMData fmd = item.ScannedFMData;
@@ -392,8 +475,9 @@ namespace FMScanner_GUI
             }
             catch (Exception ex)
             {
+                Log("Error trying to write file '" + JsonFile + "' in '" + OutputDirTextBox.Text + "'.", ex);
                 MessageBox.Show(
-                    "Error trying to write file '" + OutputDirTextBox.Text + "':\r\n" + ex,
+                    "Error trying to write file '" + JsonFile + "' in '" + OutputDirTextBox.Text + "'. See log.txt for details." + ex,
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
