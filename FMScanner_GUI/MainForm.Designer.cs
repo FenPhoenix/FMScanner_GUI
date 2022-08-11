@@ -44,15 +44,16 @@
             this.VersionCheckBox = new System.Windows.Forms.CheckBox();
             this.LanguagesCheckBox = new System.Windows.Forms.CheckBox();
             this.ScanButton = new System.Windows.Forms.Button();
-            this.OutputFileLabel = new System.Windows.Forms.Label();
-            this.OutputFileTextBox = new System.Windows.Forms.TextBox();
-            this.OutputFileBrowseButton = new System.Windows.Forms.Button();
+            this.OutputDirLabel = new System.Windows.Forms.Label();
+            this.OutputDirTextBox = new System.Windows.Forms.TextBox();
+            this.OutputDirBrowseButton = new System.Windows.Forms.Button();
             this.ClearInputFilesButton = new System.Windows.Forms.Button();
             this.AddFMsButton = new System.Windows.Forms.Button();
             this.ScanProgressBar = new System.Windows.Forms.ProgressBar();
             this.IgnoreFMSelBakCheckBox = new System.Windows.Forms.CheckBox();
             this.ScanInfoLabel = new System.Windows.Forms.Label();
             this.CancelScanButton = new System.Windows.Forms.Button();
+            this.OutputFileNoteLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // InputFilesListBox
@@ -64,7 +65,7 @@
             this.InputFilesListBox.FormattingEnabled = true;
             this.InputFilesListBox.Location = new System.Drawing.Point(8, 8);
             this.InputFilesListBox.Name = "InputFilesListBox";
-            this.InputFilesListBox.Size = new System.Drawing.Size(904, 342);
+            this.InputFilesListBox.Size = new System.Drawing.Size(904, 316);
             this.InputFilesListBox.TabIndex = 0;
             this.InputFilesListBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.InputFilesListBox_DragDrop);
             this.InputFilesListBox.DragEnter += new System.Windows.Forms.DragEventHandler(this.InputFilesListBox_DragEnter);
@@ -75,7 +76,7 @@
             this.TitleCheckBox.AutoSize = true;
             this.TitleCheckBox.Checked = true;
             this.TitleCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.TitleCheckBox.Location = new System.Drawing.Point(16, 388);
+            this.TitleCheckBox.Location = new System.Drawing.Point(16, 360);
             this.TitleCheckBox.Name = "TitleCheckBox";
             this.TitleCheckBox.Size = new System.Drawing.Size(46, 17);
             this.TitleCheckBox.TabIndex = 1;
@@ -88,7 +89,7 @@
             this.AuthorCheckBox.AutoSize = true;
             this.AuthorCheckBox.Checked = true;
             this.AuthorCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.AuthorCheckBox.Location = new System.Drawing.Point(16, 404);
+            this.AuthorCheckBox.Location = new System.Drawing.Point(16, 376);
             this.AuthorCheckBox.Name = "AuthorCheckBox";
             this.AuthorCheckBox.Size = new System.Drawing.Size(57, 17);
             this.AuthorCheckBox.TabIndex = 1;
@@ -101,7 +102,7 @@
             this.GameCheckBox.AutoSize = true;
             this.GameCheckBox.Checked = true;
             this.GameCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.GameCheckBox.Location = new System.Drawing.Point(16, 420);
+            this.GameCheckBox.Location = new System.Drawing.Point(16, 392);
             this.GameCheckBox.Name = "GameCheckBox";
             this.GameCheckBox.Size = new System.Drawing.Size(54, 17);
             this.GameCheckBox.TabIndex = 1;
@@ -114,7 +115,7 @@
             this.CustomResourcesCheckBox.AutoSize = true;
             this.CustomResourcesCheckBox.Checked = true;
             this.CustomResourcesCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.CustomResourcesCheckBox.Location = new System.Drawing.Point(16, 436);
+            this.CustomResourcesCheckBox.Location = new System.Drawing.Point(16, 408);
             this.CustomResourcesCheckBox.Name = "CustomResourcesCheckBox";
             this.CustomResourcesCheckBox.Size = new System.Drawing.Size(110, 17);
             this.CustomResourcesCheckBox.TabIndex = 1;
@@ -127,7 +128,7 @@
             this.SizeCheckBox.AutoSize = true;
             this.SizeCheckBox.Checked = true;
             this.SizeCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.SizeCheckBox.Location = new System.Drawing.Point(16, 452);
+            this.SizeCheckBox.Location = new System.Drawing.Point(16, 424);
             this.SizeCheckBox.Name = "SizeCheckBox";
             this.SizeCheckBox.Size = new System.Drawing.Size(46, 17);
             this.SizeCheckBox.TabIndex = 1;
@@ -140,7 +141,7 @@
             this.LastUpdatedDateCheckBox.AutoSize = true;
             this.LastUpdatedDateCheckBox.Checked = true;
             this.LastUpdatedDateCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.LastUpdatedDateCheckBox.Location = new System.Drawing.Point(16, 468);
+            this.LastUpdatedDateCheckBox.Location = new System.Drawing.Point(16, 440);
             this.LastUpdatedDateCheckBox.Name = "LastUpdatedDateCheckBox";
             this.LastUpdatedDateCheckBox.Size = new System.Drawing.Size(112, 17);
             this.LastUpdatedDateCheckBox.TabIndex = 1;
@@ -153,7 +154,7 @@
             this.TagsCheckBox.AutoSize = true;
             this.TagsCheckBox.Checked = true;
             this.TagsCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.TagsCheckBox.Location = new System.Drawing.Point(16, 484);
+            this.TagsCheckBox.Location = new System.Drawing.Point(16, 456);
             this.TagsCheckBox.Name = "TagsCheckBox";
             this.TagsCheckBox.Size = new System.Drawing.Size(50, 17);
             this.TagsCheckBox.TabIndex = 1;
@@ -166,7 +167,7 @@
             this.DescriptionCheckBox.AutoSize = true;
             this.DescriptionCheckBox.Checked = true;
             this.DescriptionCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.DescriptionCheckBox.Location = new System.Drawing.Point(200, 484);
+            this.DescriptionCheckBox.Location = new System.Drawing.Point(200, 456);
             this.DescriptionCheckBox.Name = "DescriptionCheckBox";
             this.DescriptionCheckBox.Size = new System.Drawing.Size(79, 17);
             this.DescriptionCheckBox.TabIndex = 1;
@@ -179,7 +180,7 @@
             this.NewDarkMinVerCheckBox.AutoSize = true;
             this.NewDarkMinVerCheckBox.Checked = true;
             this.NewDarkMinVerCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.NewDarkMinVerCheckBox.Location = new System.Drawing.Point(200, 468);
+            this.NewDarkMinVerCheckBox.Location = new System.Drawing.Point(200, 440);
             this.NewDarkMinVerCheckBox.Name = "NewDarkMinVerCheckBox";
             this.NewDarkMinVerCheckBox.Size = new System.Drawing.Size(151, 17);
             this.NewDarkMinVerCheckBox.TabIndex = 1;
@@ -192,7 +193,7 @@
             this.NewDarkRequiredCheckBox.AutoSize = true;
             this.NewDarkRequiredCheckBox.Checked = true;
             this.NewDarkRequiredCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.NewDarkRequiredCheckBox.Location = new System.Drawing.Point(200, 452);
+            this.NewDarkRequiredCheckBox.Location = new System.Drawing.Point(200, 424);
             this.NewDarkRequiredCheckBox.Name = "NewDarkRequiredCheckBox";
             this.NewDarkRequiredCheckBox.Size = new System.Drawing.Size(112, 17);
             this.NewDarkRequiredCheckBox.TabIndex = 1;
@@ -205,7 +206,7 @@
             this.MissionCountCheckBox.AutoSize = true;
             this.MissionCountCheckBox.Checked = true;
             this.MissionCountCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.MissionCountCheckBox.Location = new System.Drawing.Point(200, 388);
+            this.MissionCountCheckBox.Location = new System.Drawing.Point(200, 360);
             this.MissionCountCheckBox.Name = "MissionCountCheckBox";
             this.MissionCountCheckBox.Size = new System.Drawing.Size(91, 17);
             this.MissionCountCheckBox.TabIndex = 1;
@@ -218,7 +219,7 @@
             this.MissionNamesCheckBox.AutoSize = true;
             this.MissionNamesCheckBox.Checked = true;
             this.MissionNamesCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.MissionNamesCheckBox.Location = new System.Drawing.Point(200, 404);
+            this.MissionNamesCheckBox.Location = new System.Drawing.Point(200, 376);
             this.MissionNamesCheckBox.Name = "MissionNamesCheckBox";
             this.MissionNamesCheckBox.Size = new System.Drawing.Size(144, 17);
             this.MissionNamesCheckBox.TabIndex = 1;
@@ -231,7 +232,7 @@
             this.VersionCheckBox.AutoSize = true;
             this.VersionCheckBox.Checked = true;
             this.VersionCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.VersionCheckBox.Location = new System.Drawing.Point(200, 420);
+            this.VersionCheckBox.Location = new System.Drawing.Point(200, 392);
             this.VersionCheckBox.Name = "VersionCheckBox";
             this.VersionCheckBox.Size = new System.Drawing.Size(61, 17);
             this.VersionCheckBox.TabIndex = 1;
@@ -244,7 +245,7 @@
             this.LanguagesCheckBox.AutoSize = true;
             this.LanguagesCheckBox.Checked = true;
             this.LanguagesCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.LanguagesCheckBox.Location = new System.Drawing.Point(200, 436);
+            this.LanguagesCheckBox.Location = new System.Drawing.Point(200, 408);
             this.LanguagesCheckBox.Name = "LanguagesCheckBox";
             this.LanguagesCheckBox.Size = new System.Drawing.Size(79, 17);
             this.LanguagesCheckBox.TabIndex = 1;
@@ -254,7 +255,7 @@
             // ScanButton
             // 
             this.ScanButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.ScanButton.Location = new System.Drawing.Point(480, 420);
+            this.ScanButton.Location = new System.Drawing.Point(560, 484);
             this.ScanButton.Name = "ScanButton";
             this.ScanButton.Size = new System.Drawing.Size(96, 32);
             this.ScanButton.TabIndex = 2;
@@ -262,38 +263,39 @@
             this.ScanButton.UseVisualStyleBackColor = true;
             this.ScanButton.Click += new System.EventHandler(this.ScanButton_Click);
             // 
-            // OutputFileLabel
+            // OutputDirLabel
             // 
-            this.OutputFileLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.OutputFileLabel.AutoSize = true;
-            this.OutputFileLabel.Location = new System.Drawing.Point(416, 388);
-            this.OutputFileLabel.Name = "OutputFileLabel";
-            this.OutputFileLabel.Size = new System.Drawing.Size(58, 13);
-            this.OutputFileLabel.TabIndex = 3;
-            this.OutputFileLabel.Text = "Output file:";
+            this.OutputDirLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.OutputDirLabel.AutoSize = true;
+            this.OutputDirLabel.Location = new System.Drawing.Point(416, 364);
+            this.OutputDirLabel.Name = "OutputDirLabel";
+            this.OutputDirLabel.Size = new System.Drawing.Size(56, 13);
+            this.OutputDirLabel.TabIndex = 3;
+            this.OutputDirLabel.Text = "Output dir:";
             // 
-            // OutputFileTextBox
+            // OutputDirTextBox
             // 
-            this.OutputFileTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.OutputFileTextBox.Location = new System.Drawing.Point(480, 385);
-            this.OutputFileTextBox.Name = "OutputFileTextBox";
-            this.OutputFileTextBox.Size = new System.Drawing.Size(336, 20);
-            this.OutputFileTextBox.TabIndex = 4;
+            this.OutputDirTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.OutputDirTextBox.Location = new System.Drawing.Point(416, 380);
+            this.OutputDirTextBox.Name = "OutputDirTextBox";
+            this.OutputDirTextBox.Size = new System.Drawing.Size(336, 20);
+            this.OutputDirTextBox.TabIndex = 4;
             // 
-            // OutputFileBrowseButton
+            // OutputDirBrowseButton
             // 
-            this.OutputFileBrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.OutputFileBrowseButton.Location = new System.Drawing.Point(816, 384);
-            this.OutputFileBrowseButton.Name = "OutputFileBrowseButton";
-            this.OutputFileBrowseButton.Size = new System.Drawing.Size(75, 22);
-            this.OutputFileBrowseButton.TabIndex = 5;
-            this.OutputFileBrowseButton.Text = "Browse...";
-            this.OutputFileBrowseButton.UseVisualStyleBackColor = true;
-            this.OutputFileBrowseButton.Click += new System.EventHandler(this.OutputFileBrowseButton_Click);
+            this.OutputDirBrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.OutputDirBrowseButton.Location = new System.Drawing.Point(752, 379);
+            this.OutputDirBrowseButton.Name = "OutputDirBrowseButton";
+            this.OutputDirBrowseButton.Size = new System.Drawing.Size(75, 22);
+            this.OutputDirBrowseButton.TabIndex = 5;
+            this.OutputDirBrowseButton.Text = "Browse...";
+            this.OutputDirBrowseButton.UseVisualStyleBackColor = true;
+            this.OutputDirBrowseButton.Click += new System.EventHandler(this.OutputFileBrowseButton_Click);
             // 
             // ClearInputFilesButton
             // 
-            this.ClearInputFilesButton.Location = new System.Drawing.Point(838, 352);
+            this.ClearInputFilesButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ClearInputFilesButton.Location = new System.Drawing.Point(838, 324);
             this.ClearInputFilesButton.Name = "ClearInputFilesButton";
             this.ClearInputFilesButton.Size = new System.Drawing.Size(75, 23);
             this.ClearInputFilesButton.TabIndex = 6;
@@ -303,7 +305,8 @@
             // 
             // AddFMsButton
             // 
-            this.AddFMsButton.Location = new System.Drawing.Point(758, 352);
+            this.AddFMsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.AddFMsButton.Location = new System.Drawing.Point(758, 324);
             this.AddFMsButton.Name = "AddFMsButton";
             this.AddFMsButton.Size = new System.Drawing.Size(80, 23);
             this.AddFMsButton.TabIndex = 6;
@@ -313,17 +316,19 @@
             // 
             // ScanProgressBar
             // 
-            this.ScanProgressBar.Location = new System.Drawing.Point(424, 504);
+            this.ScanProgressBar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.ScanProgressBar.Location = new System.Drawing.Point(424, 460);
             this.ScanProgressBar.Name = "ScanProgressBar";
             this.ScanProgressBar.Size = new System.Drawing.Size(320, 16);
             this.ScanProgressBar.TabIndex = 7;
             // 
             // IgnoreFMSelBakCheckBox
             // 
+            this.IgnoreFMSelBakCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.IgnoreFMSelBakCheckBox.AutoSize = true;
             this.IgnoreFMSelBakCheckBox.Checked = true;
             this.IgnoreFMSelBakCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.IgnoreFMSelBakCheckBox.Location = new System.Drawing.Point(8, 352);
+            this.IgnoreFMSelBakCheckBox.Location = new System.Drawing.Point(560, 520);
             this.IgnoreFMSelBakCheckBox.Name = "IgnoreFMSelBakCheckBox";
             this.IgnoreFMSelBakCheckBox.Size = new System.Drawing.Size(204, 17);
             this.IgnoreFMSelBakCheckBox.TabIndex = 8;
@@ -332,8 +337,9 @@
             // 
             // ScanInfoLabel
             // 
+            this.ScanInfoLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.ScanInfoLabel.AutoSize = true;
-            this.ScanInfoLabel.Location = new System.Drawing.Point(424, 472);
+            this.ScanInfoLabel.Location = new System.Drawing.Point(424, 428);
             this.ScanInfoLabel.Name = "ScanInfoLabel";
             this.ScanInfoLabel.Size = new System.Drawing.Size(56, 13);
             this.ScanInfoLabel.TabIndex = 9;
@@ -341,28 +347,40 @@
             // 
             // CancelScanButton
             // 
-            this.CancelScanButton.Location = new System.Drawing.Point(584, 424);
+            this.CancelScanButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.CancelScanButton.Location = new System.Drawing.Point(656, 488);
             this.CancelScanButton.Name = "CancelScanButton";
-            this.CancelScanButton.Size = new System.Drawing.Size(75, 23);
+            this.CancelScanButton.Size = new System.Drawing.Size(84, 24);
             this.CancelScanButton.TabIndex = 10;
             this.CancelScanButton.Text = "Cancel scan";
             this.CancelScanButton.UseVisualStyleBackColor = true;
             this.CancelScanButton.Click += new System.EventHandler(this.CancelScanButton_Click);
             // 
+            // OutputFileNoteLabel
+            // 
+            this.OutputFileNoteLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.OutputFileNoteLabel.AutoSize = true;
+            this.OutputFileNoteLabel.Location = new System.Drawing.Point(416, 404);
+            this.OutputFileNoteLabel.Name = "OutputFileNoteLabel";
+            this.OutputFileNoteLabel.Size = new System.Drawing.Size(83, 13);
+            this.OutputFileNoteLabel.TabIndex = 3;
+            this.OutputFileNoteLabel.Text = "[output file note]";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(916, 563);
+            this.ClientSize = new System.Drawing.Size(916, 555);
             this.Controls.Add(this.CancelScanButton);
             this.Controls.Add(this.ScanInfoLabel);
             this.Controls.Add(this.IgnoreFMSelBakCheckBox);
             this.Controls.Add(this.ScanProgressBar);
             this.Controls.Add(this.AddFMsButton);
             this.Controls.Add(this.ClearInputFilesButton);
-            this.Controls.Add(this.OutputFileBrowseButton);
-            this.Controls.Add(this.OutputFileTextBox);
-            this.Controls.Add(this.OutputFileLabel);
+            this.Controls.Add(this.OutputDirBrowseButton);
+            this.Controls.Add(this.OutputDirTextBox);
+            this.Controls.Add(this.OutputFileNoteLabel);
+            this.Controls.Add(this.OutputDirLabel);
             this.Controls.Add(this.ScanButton);
             this.Controls.Add(this.LanguagesCheckBox);
             this.Controls.Add(this.VersionCheckBox);
@@ -405,14 +423,15 @@
         private System.Windows.Forms.CheckBox VersionCheckBox;
         private System.Windows.Forms.CheckBox LanguagesCheckBox;
         private System.Windows.Forms.Button ScanButton;
-        private System.Windows.Forms.Label OutputFileLabel;
-        private System.Windows.Forms.TextBox OutputFileTextBox;
-        private System.Windows.Forms.Button OutputFileBrowseButton;
+        private System.Windows.Forms.Label OutputDirLabel;
+        private System.Windows.Forms.TextBox OutputDirTextBox;
+        private System.Windows.Forms.Button OutputDirBrowseButton;
         private System.Windows.Forms.Button ClearInputFilesButton;
         private System.Windows.Forms.Button AddFMsButton;
         private System.Windows.Forms.ProgressBar ScanProgressBar;
         private System.Windows.Forms.CheckBox IgnoreFMSelBakCheckBox;
         private System.Windows.Forms.Label ScanInfoLabel;
         private System.Windows.Forms.Button CancelScanButton;
+        private System.Windows.Forms.Label OutputFileNoteLabel;
     }
 }

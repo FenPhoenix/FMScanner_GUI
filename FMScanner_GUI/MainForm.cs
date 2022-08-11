@@ -20,6 +20,8 @@ namespace FMScanner_GUI
     {
         private readonly string ConfigFile = Path.Combine(Application.StartupPath, "Config.ini");
 
+        private const string JsonFile = "FMScanner_output.json";
+
         private void ReadConfig()
         {
             try
@@ -39,7 +41,7 @@ namespace FMScanner_GUI
                             switch (key)
                             {
                                 case "OutputFile":
-                                    OutputFileTextBox.Text = value;
+                                    OutputDirTextBox.Text = value;
                                     break;
                             }
                         }
@@ -48,20 +50,21 @@ namespace FMScanner_GUI
             }
             catch
             {
-                OutputFileTextBox.Text = "";
+                OutputDirTextBox.Text = "";
             }
         }
 
         private void WriteConfigFile()
         {
             using var sw = new StreamWriter(ConfigFile);
-            sw.WriteLine("OutputFile=" + OutputFileTextBox.Text);
+            sw.WriteLine("OutputFile=" + OutputDirTextBox.Text);
         }
 
         public MainForm()
         {
             InitializeComponent();
             ScanInfoLabel.Text = "";
+            OutputFileNoteLabel.Text = "(output file will be '" + JsonFile + "')";
             ReadConfig();
         }
 
@@ -119,19 +122,18 @@ namespace FMScanner_GUI
 
         private void OutputFileBrowseButton_Click(object sender, EventArgs e)
         {
-#if false
-            using var d = new VistaFolderBrowserDialog { InitialDirectory = OutputFileTextBox.Text };
+#if true
+            using var d = new VistaFolderBrowserDialog { InitialDirectory = OutputDirTextBox.Text };
             if (d.ShowDialog(this) != DialogResult.OK) return;
-            OutputFileTextBox.Text = d.DirectoryName;
+            OutputDirTextBox.Text = d.DirectoryName;
 #else
-            using var d = new OpenFileDialog { InitialDirectory = OutputFileTextBox.Text };
+            using var d = new OpenFileDialog { InitialDirectory = OutputDirTextBox.Text };
             if (d.ShowDialog(this) != DialogResult.OK) return;
-            OutputFileTextBox.Text = d.FileName;
+            OutputDirTextBox.Text = d.FileName;
 #endif
         }
 
         private static readonly string _baseTemp = Path.Combine(Path.GetTempPath(), "FMScanner_GUI");
-
 
         private static string? _fmScannerTemp;
         internal static string FMScannerTemp => _fmScannerTemp ??= Path.Combine(_baseTemp, "FMScan");
@@ -216,6 +218,8 @@ namespace FMScanner_GUI
 
         private async Task Scan()
         {
+            if (InputFilesListBox.Items.Count == 0) return;
+
             try
             {
                 _scanCts = _scanCts.Recreate();
@@ -274,18 +278,6 @@ namespace FMScanner_GUI
                     Path = item
                 });
             }
-
-            //void ReportProgress(ProgressReport pr) => Core.View.SetProgressBoxState_Single(
-            //    message1: scanMessage ?? LText.ProgressBox.ReportScanningFirst +
-            //    pr.FMNumber +
-            //    LText.ProgressBox.ReportScanningBetweenNumAndTotal +
-            //    pr.FMsTotal +
-            //    LText.ProgressBox.ReportScanningLast,
-            //    message2: pr.FMName.ExtIsArchive()
-            //        ? pr.FMName.GetFileNameFast()
-            //        : pr.FMName.GetDirNameFast(),
-            //    percent: pr.Percent
-            //);
 
             void ReportProgress(ProgressReport pr)
             {
@@ -396,12 +388,12 @@ namespace FMScanner_GUI
                     lines.Add("}" + (scannedI == fmDataList.Count - 1 ? "" : ","));
                 }
 
-                File.WriteAllLines(OutputFileTextBox.Text, lines, Encoding.UTF8);
+                File.WriteAllLines(Path.Combine(OutputDirTextBox.Text, JsonFile), lines, Encoding.UTF8);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    "Error trying to write file '" + OutputFileTextBox.Text + "':\r\n" + ex,
+                    "Error trying to write file '" + OutputDirTextBox.Text + "':\r\n" + ex,
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -425,10 +417,7 @@ namespace FMScanner_GUI
             AddToListBox(d.FileNames.ToList());
         }
 
-        private void CancelScanButton_Click(object sender, EventArgs e)
-        {
-            CancelToken();
-        }
+        private void CancelScanButton_Click(object sender, EventArgs e) => CancelToken();
     }
     /*
     {
