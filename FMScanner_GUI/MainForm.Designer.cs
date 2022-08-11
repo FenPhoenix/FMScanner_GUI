@@ -284,6 +284,7 @@
             this.OutputFileBrowseButton.TabIndex = 5;
             this.OutputFileBrowseButton.Text = "Browse...";
             this.OutputFileBrowseButton.UseVisualStyleBackColor = true;
+            this.OutputFileBrowseButton.Click += new System.EventHandler(this.OutputFileBrowseButton_Click);
             // 
             // ClearInputFilesButton
             // 
