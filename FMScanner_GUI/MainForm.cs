@@ -69,6 +69,8 @@ namespace FMScanner_GUI
             ScanInfoLabel.Text = "";
             OutputFileNoteLabel.Text = "(output file will be '" + JsonFile + "')";
 
+            Text = "FMScanner GUI " + Application.ProductVersion;
+
             SetLogFile(LogFile);
 
             ReadConfig();
