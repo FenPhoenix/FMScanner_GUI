@@ -50,6 +50,9 @@
             this.ClearInputFilesButton = new System.Windows.Forms.Button();
             this.AddFMsButton = new System.Windows.Forms.Button();
             this.ScanProgressBar = new System.Windows.Forms.ProgressBar();
+            this.IgnoreFMSelBakCheckBox = new System.Windows.Forms.CheckBox();
+            this.ScanInfoLabel = new System.Windows.Forms.Label();
+            this.CancelScanButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // InputFilesListBox
@@ -296,6 +299,7 @@
             this.ClearInputFilesButton.TabIndex = 6;
             this.ClearInputFilesButton.Text = "Clear";
             this.ClearInputFilesButton.UseVisualStyleBackColor = true;
+            this.ClearInputFilesButton.Click += new System.EventHandler(this.ClearInputFilesButton_Click);
             // 
             // AddFMsButton
             // 
@@ -305,19 +309,54 @@
             this.AddFMsButton.TabIndex = 6;
             this.AddFMsButton.Text = "Add FMs...";
             this.AddFMsButton.UseVisualStyleBackColor = true;
+            this.AddFMsButton.Click += new System.EventHandler(this.AddFMsButton_Click);
             // 
             // ScanProgressBar
             // 
-            this.ScanProgressBar.Location = new System.Drawing.Point(520, 512);
+            this.ScanProgressBar.Location = new System.Drawing.Point(424, 504);
             this.ScanProgressBar.Name = "ScanProgressBar";
             this.ScanProgressBar.Size = new System.Drawing.Size(320, 16);
             this.ScanProgressBar.TabIndex = 7;
+            // 
+            // IgnoreFMSelBakCheckBox
+            // 
+            this.IgnoreFMSelBakCheckBox.AutoSize = true;
+            this.IgnoreFMSelBakCheckBox.Checked = true;
+            this.IgnoreFMSelBakCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.IgnoreFMSelBakCheckBox.Location = new System.Drawing.Point(8, 352);
+            this.IgnoreFMSelBakCheckBox.Name = "IgnoreFMSelBakCheckBox";
+            this.IgnoreFMSelBakCheckBox.Size = new System.Drawing.Size(204, 17);
+            this.IgnoreFMSelBakCheckBox.TabIndex = 8;
+            this.IgnoreFMSelBakCheckBox.Text = "Ignore files ending in \".FMSelBak.zip\"";
+            this.IgnoreFMSelBakCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // ScanInfoLabel
+            // 
+            this.ScanInfoLabel.AutoSize = true;
+            this.ScanInfoLabel.Location = new System.Drawing.Point(424, 472);
+            this.ScanInfoLabel.Name = "ScanInfoLabel";
+            this.ScanInfoLabel.Size = new System.Drawing.Size(56, 13);
+            this.ScanInfoLabel.TabIndex = 9;
+            this.ScanInfoLabel.Text = "[scan info]";
+            // 
+            // CancelScanButton
+            // 
+            this.CancelScanButton.Location = new System.Drawing.Point(584, 424);
+            this.CancelScanButton.Name = "CancelScanButton";
+            this.CancelScanButton.Size = new System.Drawing.Size(75, 23);
+            this.CancelScanButton.TabIndex = 10;
+            this.CancelScanButton.Text = "Cancel scan";
+            this.CancelScanButton.UseVisualStyleBackColor = true;
+            this.CancelScanButton.Click += new System.EventHandler(this.CancelScanButton_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(916, 563);
+            this.Controls.Add(this.CancelScanButton);
+            this.Controls.Add(this.ScanInfoLabel);
+            this.Controls.Add(this.IgnoreFMSelBakCheckBox);
             this.Controls.Add(this.ScanProgressBar);
             this.Controls.Add(this.AddFMsButton);
             this.Controls.Add(this.ClearInputFilesButton);
@@ -372,5 +411,8 @@
         private System.Windows.Forms.Button ClearInputFilesButton;
         private System.Windows.Forms.Button AddFMsButton;
         private System.Windows.Forms.ProgressBar ScanProgressBar;
+        private System.Windows.Forms.CheckBox IgnoreFMSelBakCheckBox;
+        private System.Windows.Forms.Label ScanInfoLabel;
+        private System.Windows.Forms.Button CancelScanButton;
     }
 }

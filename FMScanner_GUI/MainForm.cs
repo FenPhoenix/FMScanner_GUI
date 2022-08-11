@@ -61,7 +61,7 @@ namespace FMScanner_GUI
         public MainForm()
         {
             InitializeComponent();
-
+            ScanInfoLabel.Text = "";
             ReadConfig();
         }
 
@@ -70,11 +70,46 @@ namespace FMScanner_GUI
             if (e.Data?.GetDataPresent(DataFormats.FileDrop) == true) e.Effect = DragDropEffects.Copy;
         }
 
+        private void AddToListBox(List<string> items)
+        {
+            try
+            {
+                InputFilesListBox.BeginUpdate();
+
+                var listBoxItemsHash = InputFilesListBox.Items.Cast<string>().ToHashSetPathI();
+                foreach (string item in items)
+                {
+                    if (!listBoxItemsHash.Contains(item))
+                    {
+                        listBoxItemsHash.Add(item);
+                        InputFilesListBox.Items.Add(item);
+                    }
+                }
+            }
+            finally
+            {
+                InputFilesListBox.EndUpdate();
+            }
+        }
+
         private void InputFilesListBox_DragDrop(object sender, DragEventArgs e)
         {
             if (e.Data?.GetData(DataFormats.FileDrop) is not string[] files) return;
 
-            InputFilesListBox.Items.AddRange(files.Cast<object>().ToArray());
+            var filesList = files.ToList();
+
+            for (int i = 0; i < filesList.Count; i++)
+            {
+                var file = filesList[i];
+
+                if (!file.EndsWithI(".zip") && !file.EndsWithI(".7z"))
+                {
+                    filesList.RemoveAt(i);
+                    i--;
+                }
+            }
+
+            AddToListBox(filesList);
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -179,24 +214,38 @@ namespace FMScanner_GUI
         private static CancellationTokenSource _scanCts = new();
         private static void CancelToken() => _scanCts.CancelIfNotDisposed();
 
-        private async Task WriteJson()
+        private async Task Scan()
         {
             try
             {
-                await WriteJsonInternal();
+                _scanCts = _scanCts.Recreate();
+                ScanProgressBar.Value = 0;
+
+                foreach (Control c in Controls)
+                {
+                    if (c != CancelScanButton && c != ScanProgressBar && c != ScanInfoLabel)
+                    {
+                        c.Enabled = false;
+                    }
+                }
+
+                await ScanInternal();
             }
             finally
             {
                 ScanProgressBar.Value = 0;
                 _scanCts.Dispose();
+                ScanInfoLabel.Text = "";
+
+                foreach (Control c in Controls)
+                {
+                    c.Enabled = true;
+                }
             }
         }
 
-        private async Task WriteJsonInternal()
+        private async Task ScanInternal()
         {
-            _scanCts = _scanCts.Recreate();
-            ScanProgressBar.Value = 0;
-
             var scanOptions = ScanOptions.FalseDefault(
                 scanTitle: TitleCheckBox.Checked,
                 scanAuthor: AuthorCheckBox.Checked,
@@ -217,6 +266,9 @@ namespace FMScanner_GUI
             var fmsToScan = new List<FMToScan>();
             foreach (string item in InputFilesListBox.Items)
             {
+                if (!item.EndsWithI(".zip") && !item.EndsWithI(".7z")) return;
+                if (IgnoreFMSelBakCheckBox.Checked && item.EndsWithI(".FMSelBak.zip")) return;
+
                 fmsToScan.Add(new FMToScan
                 {
                     Path = item
@@ -240,6 +292,9 @@ namespace FMScanner_GUI
                 Invoke(() =>
                 {
                     ScanProgressBar.Value = pr.Percent.Clamp(0, 100);
+                    ScanInfoLabel.Text =
+                        pr.FMName + "\r\n" +
+                        pr.Percent + "%";
                 });
             }
 
@@ -355,7 +410,24 @@ namespace FMScanner_GUI
 
         private async void ScanButton_Click(object sender, EventArgs e)
         {
-            await WriteJson();
+            await Scan();
+        }
+
+        private void ClearInputFilesButton_Click(object sender, EventArgs e)
+        {
+            InputFilesListBox.Items.Clear();
+        }
+
+        private void AddFMsButton_Click(object sender, EventArgs e)
+        {
+            using var d = new OpenFileDialog { Multiselect = true, Filter = "FM archives (*.zip, *.7z)|*.zip;*.7z" };
+            if (d.ShowDialog(this) != DialogResult.OK) return;
+            AddToListBox(d.FileNames.ToList());
+        }
+
+        private void CancelScanButton_Click(object sender, EventArgs e)
+        {
+            CancelToken();
         }
     }
     /*

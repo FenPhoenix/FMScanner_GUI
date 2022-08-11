@@ -15,5 +15,7 @@ namespace FMScanner_GUI
             cts.Dispose();
             return new CancellationTokenSource();
         }
+
+        internal static bool EndsWithI(this string str, string str2) => str.EndsWith(str2, StringComparison.OrdinalIgnoreCase);
     }
 }
