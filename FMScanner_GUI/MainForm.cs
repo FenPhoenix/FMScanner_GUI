@@ -2,9 +2,9 @@ using System.Windows.Forms;
 
 namespace FMScanner_GUI
 {
-    public sealed partial class Form1 : Form
+    public sealed partial class MainForm : Form
     {
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
         }
