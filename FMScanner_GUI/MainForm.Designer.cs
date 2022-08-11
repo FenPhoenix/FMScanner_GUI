@@ -54,6 +54,7 @@
             // 
             // InputFilesListBox
             // 
+            this.InputFilesListBox.AllowDrop = true;
             this.InputFilesListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -256,6 +257,7 @@
             this.ScanButton.TabIndex = 2;
             this.ScanButton.Text = "Scan";
             this.ScanButton.UseVisualStyleBackColor = true;
+            this.ScanButton.Click += new System.EventHandler(this.ScanButton_Click);
             // 
             // OutputFileLabel
             // 

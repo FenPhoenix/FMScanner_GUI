@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using AL_Common;
 using FMScanner;
+using FMScanner_GUI.Dialogs;
 using JetBrains.Annotations;
 using static AL_Common.Common;
 
@@ -274,7 +275,7 @@ namespace FMScanner_GUI
                 {
                     true => "true",
                     false => "false",
-                    _ => ""
+                    _ => "null"
                 };
             }
 
@@ -287,7 +288,7 @@ namespace FMScanner_GUI
                 else
                 {
                     var dt = (DateTime)value;
-                    return dt.ToUniversalTime().ToString(DateTimeFormatInfo.InvariantInfo);
+                    return dt.ToUniversalTime().ToString("O");
                 }
             }
 
@@ -309,7 +310,7 @@ namespace FMScanner_GUI
                     lines.Add("  \"details\": {");
                     lines.Add("    \"game\": \"" + fmd.Game + "\",");
                     // TODO: What is this field? We don't scan for anything called "category"
-                    lines.Add("    \"category\": \"" + "" + "\",");
+                    lines.Add("    \"category\": null,");
                     lines.Add("    \"languages\": [");
                     for (int langsI = 0; langsI < fmd.Languages.Length; langsI++)
                     {
@@ -319,23 +320,22 @@ namespace FMScanner_GUI
                     lines.Add("    ],");
                     lines.Add("    \"version\": \"" + fmd.Version + "\",");
                     lines.Add("    \"newdark\": {");
-                    // TODO: What is the null value writeout for bool? in JSON?
                     lines.Add("      \"is_required\": " + NullableBool(fmd.NewDarkRequired) + ",");
                     lines.Add("      \"minimum_required_version\": \"" + fmd.NewDarkMinRequiredVersion + "\"");
                     lines.Add("    },");
-                    lines.Add("    \"original_release_date\": \"" + "" + "\",");
+                    lines.Add("    \"original_release_date\": null,");
                     lines.Add("    \"last_update_date\": \"" + NullableDateTimeToUTC(fmd.LastUpdateDate) + "\",");
                     lines.Add("    \"characteristics\": {");
-                    lines.Add("      \"has_custom_scripts\": \"" + NullableBool(fmd.HasCustomScripts) + "\",");
-                    lines.Add("      \"has_custom_textures\": \"" + NullableBool(fmd.HasCustomTextures) + "\",");
-                    lines.Add("      \"has_custom_sounds\": \"" + NullableBool(fmd.HasCustomSounds) + "\",");
-                    lines.Add("      \"has_custom_objects\": \"" + NullableBool(fmd.HasCustomObjects) + "\",");
-                    lines.Add("      \"has_custom_creatures\": \"" + NullableBool(fmd.HasCustomCreatures) + "\",");
-                    lines.Add("      \"has_custom_motions\": \"" + NullableBool(fmd.HasCustomMotions) + "\",");
-                    lines.Add("      \"has_custom_subtitles\": \"" + NullableBool(fmd.HasCustomSubtitles) + "\",");
-                    lines.Add("      \"has_automap\": \"" + NullableBool(fmd.HasAutomap) + "\",");
-                    lines.Add("      \"has_movies\": \"" + NullableBool(fmd.HasMovies) + "\",");
-                    lines.Add("      \"has_map\": \"" + NullableBool(fmd.HasMap) + "\",");
+                    lines.Add("      \"has_custom_scripts\": " + NullableBool(fmd.HasCustomScripts) + ",");
+                    lines.Add("      \"has_custom_textures\": " + NullableBool(fmd.HasCustomTextures) + ",");
+                    lines.Add("      \"has_custom_sounds\": " + NullableBool(fmd.HasCustomSounds) + ",");
+                    lines.Add("      \"has_custom_objects\": " + NullableBool(fmd.HasCustomObjects) + ",");
+                    lines.Add("      \"has_custom_creatures\": " + NullableBool(fmd.HasCustomCreatures) + ",");
+                    lines.Add("      \"has_custom_motions\": " + NullableBool(fmd.HasCustomMotions) + ",");
+                    lines.Add("      \"has_custom_subtitles\": " + NullableBool(fmd.HasCustomSubtitles) + ",");
+                    lines.Add("      \"has_automap\": " + NullableBool(fmd.HasAutomap) + ",");
+                    lines.Add("      \"has_movies\": " + NullableBool(fmd.HasMovies) + ",");
+                    lines.Add("      \"has_map\": " + NullableBool(fmd.HasMap) + ",");
                     lines.Add("    }");
                     lines.Add("  }");
                     lines.Add("}" + (scannedI == fmDataList.Count - 1 ? "" : ","));
@@ -351,6 +351,11 @@ namespace FMScanner_GUI
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
+        }
+
+        private async void ScanButton_Click(object sender, EventArgs e)
+        {
+            await WriteJson();
         }
     }
     /*
