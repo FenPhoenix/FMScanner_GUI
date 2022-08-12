@@ -256,6 +256,19 @@ namespace FMScanner_GUI
             }
         }
 
+        private static string EscapeForJson(string str)
+        {
+            return str
+                .Replace(@"\", @"\\")
+                .Replace(@"""", @"\""")
+                .Replace("/", @"\/")
+                .Replace("\b", @"\b")
+                .Replace("\f", @"\f")
+                .Replace("\n", @"\n")
+                .Replace("\r", @"\r")
+                .Replace("\t", @"\t");
+        }
+
         private async Task ScanInternal()
         {
             var scanOptions = ScanOptions.FalseDefault(
@@ -433,10 +446,11 @@ namespace FMScanner_GUI
 
                     ScannedFMData fmd = item.ScannedFMData;
 
+                    // TODO: We should probably use a proper JSON library to avoid problems but meh
                     lines.Add("{");
-                    lines.Add("  \"name\": \"" + fmd.Title + "\",");
+                    lines.Add("  \"name\": \"" + EscapeForJson(fmd.Title) + "\",");
                     lines.Add("  \"author\": {");
-                    lines.Add("    \"name\": \"" + fmd.Author + "\"");
+                    lines.Add("    \"name\": \"" + EscapeForJson(fmd.Author) + "\"");
                     lines.Add("  },");
                     lines.Add("  \"included_missions\": " + (fmd.MissionCount != null ? ((int)fmd.MissionCount).ToString(CultureInfo.InvariantCulture) : "") + ",");
                     lines.Add("  \"details\": {");
@@ -447,13 +461,13 @@ namespace FMScanner_GUI
                     for (int langsI = 0; langsI < fmd.Languages.Length; langsI++)
                     {
                         string lang = fmd.Languages[langsI];
-                        lines.Add("      \"" + lang + "\"" + (langsI == fmd.Languages.Length - 1 ? "" : ","));
+                        lines.Add("      \"" + EscapeForJson(lang) + "\"" + (langsI == fmd.Languages.Length - 1 ? "" : ","));
                     }
                     lines.Add("    ],");
-                    lines.Add("    \"version\": \"" + fmd.Version + "\",");
+                    lines.Add("    \"version\": \"" + EscapeForJson(fmd.Version) + "\",");
                     lines.Add("    \"newdark\": {");
                     lines.Add("      \"is_required\": " + NullableBool(fmd.NewDarkRequired) + ",");
-                    lines.Add("      \"minimum_required_version\": \"" + fmd.NewDarkMinRequiredVersion + "\"");
+                    lines.Add("      \"minimum_required_version\": \"" + EscapeForJson(fmd.NewDarkMinRequiredVersion) + "\"");
                     lines.Add("    },");
                     lines.Add("    \"original_release_date\": null,");
                     lines.Add("    \"last_update_date\": \"" + NullableDateTimeToUTC(fmd.LastUpdateDate) + "\",");
