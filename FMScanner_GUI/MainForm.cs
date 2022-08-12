@@ -441,7 +441,7 @@ namespace FMScanner_GUI
                     lines.Add("  \"included_missions\": " + (fmd.MissionCount != null ? ((int)fmd.MissionCount).ToString(CultureInfo.InvariantCulture) : "") + ",");
                     lines.Add("  \"details\": {");
                     lines.Add("    \"game\": \"" + fmd.Game + "\",");
-                    // TODO: What is this field? We don't scan for anything called "category"
+                    // TODO: This means "genre" essentially, so we could parse that from the tags string if we wanted
                     lines.Add("    \"category\": null,");
                     lines.Add("    \"languages\": [");
                     for (int langsI = 0; langsI < fmd.Languages.Length; langsI++)
@@ -467,7 +467,7 @@ namespace FMScanner_GUI
                     lines.Add("      \"has_custom_subtitles\": " + NullableBool(fmd.HasCustomSubtitles) + ",");
                     lines.Add("      \"has_automap\": " + NullableBool(fmd.HasAutomap) + ",");
                     lines.Add("      \"has_movies\": " + NullableBool(fmd.HasMovies) + ",");
-                    lines.Add("      \"has_map\": " + NullableBool(fmd.HasMap) + ",");
+                    lines.Add("      \"has_map\": " + NullableBool(fmd.HasMap));
                     lines.Add("    }");
                     lines.Add("  }");
                     lines.Add("}" + (scannedI == fmDataList.Count - 1 ? "" : ","));
