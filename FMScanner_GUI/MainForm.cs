@@ -291,14 +291,16 @@ namespace FMScanner_GUI
             var fmsToScan = new List<FMToScan>();
             foreach (string item in InputFilesListBox.Items)
             {
-                if (!item.EndsWithI(".zip") && !item.EndsWithI(".7z")) return;
-                if (IgnoreFMSelBakCheckBox.Checked && item.EndsWithI(".FMSelBak.zip")) return;
+                if (!item.EndsWithI(".zip") && !item.EndsWithI(".7z")) continue;
+                if (IgnoreFMSelBakCheckBox.Checked && item.EndsWithI(".FMSelBak.zip")) continue;
 
                 fmsToScan.Add(new FMToScan
                 {
                     Path = item
                 });
             }
+
+            if (fmsToScan.Count == 0) return;
 
             void ReportProgress(ProgressReport pr)
             {
