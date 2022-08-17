@@ -12,6 +12,7 @@ using AL_Common;
 using FMScanner;
 using FMScanner_GUI.Dialogs;
 using JetBrains.Annotations;
+using Newtonsoft.Json;
 using static AL_Common.Common;
 using static AL_Common.Logger;
 
@@ -339,29 +340,6 @@ namespace FMScanner_GUI
 
             var lines = new List<string>();
 
-            static string NullableBool(bool? value)
-            {
-                return value switch
-                {
-                    true => "true",
-                    false => "false",
-                    _ => "null"
-                };
-            }
-
-            static string NullableDateTimeToUTC(DateTime? value)
-            {
-                if (value == null)
-                {
-                    return "";
-                }
-                else
-                {
-                    var dt = (DateTime)value;
-                    return dt.ToUniversalTime().ToString("O");
-                }
-            }
-
             try
             {
                 bool errors = false;
@@ -434,62 +412,11 @@ namespace FMScanner_GUI
                     return;
                 }
 
-                for (int scannedI = 0; scannedI < fmDataList.Count; scannedI++)
-                {
-                    ScannedFMDataAndError item = fmDataList[scannedI];
-
-                    if (item.Fen7zResult != null ||
-                        item.Exception != null ||
-                        !item.ErrorInfo.IsEmpty())
-                    {
-                    }
-
-                    if (item.ScannedFMData == null) continue;
-
-                    ScannedFMData fmd = item.ScannedFMData;
-
-                    // TODO: We should probably use a proper JSON library to avoid problems but meh
-                    lines.Add("{");
-                    lines.Add("  \"name\": \"" + EscapeForJson(fmd.Title) + "\",");
-                    lines.Add("  \"author\": {");
-                    lines.Add("    \"name\": \"" + EscapeForJson(fmd.Author) + "\"");
-                    lines.Add("  },");
-                    lines.Add("  \"included_missions\": " + (fmd.MissionCount != null ? ((int)fmd.MissionCount).ToString(CultureInfo.InvariantCulture) : "") + ",");
-                    lines.Add("  \"details\": {");
-                    lines.Add("    \"game\": \"" + fmd.Game + "\",");
-                    // TODO: This means "genre" essentially, so we could parse that from the tags string if we wanted
-                    lines.Add("    \"category\": null,");
-                    lines.Add("    \"languages\": [");
-                    for (int langsI = 0; langsI < fmd.Languages.Length; langsI++)
-                    {
-                        string lang = fmd.Languages[langsI];
-                        lines.Add("      \"" + EscapeForJson(lang) + "\"" + (langsI == fmd.Languages.Length - 1 ? "" : ","));
-                    }
-                    lines.Add("    ],");
-                    lines.Add("    \"version\": \"" + EscapeForJson(fmd.Version) + "\",");
-                    lines.Add("    \"newdark\": {");
-                    lines.Add("      \"is_required\": " + NullableBool(fmd.NewDarkRequired) + ",");
-                    lines.Add("      \"minimum_required_version\": \"" + EscapeForJson(fmd.NewDarkMinRequiredVersion) + "\"");
-                    lines.Add("    },");
-                    lines.Add("    \"original_release_date\": null,");
-                    lines.Add("    \"last_update_date\": \"" + NullableDateTimeToUTC(fmd.LastUpdateDate) + "\",");
-                    lines.Add("    \"characteristics\": {");
-                    lines.Add("      \"has_custom_scripts\": " + NullableBool(fmd.HasCustomScripts) + ",");
-                    lines.Add("      \"has_custom_textures\": " + NullableBool(fmd.HasCustomTextures) + ",");
-                    lines.Add("      \"has_custom_sounds\": " + NullableBool(fmd.HasCustomSounds) + ",");
-                    lines.Add("      \"has_custom_objects\": " + NullableBool(fmd.HasCustomObjects) + ",");
-                    lines.Add("      \"has_custom_creatures\": " + NullableBool(fmd.HasCustomCreatures) + ",");
-                    lines.Add("      \"has_custom_motions\": " + NullableBool(fmd.HasCustomMotions) + ",");
-                    lines.Add("      \"has_custom_subtitles\": " + NullableBool(fmd.HasCustomSubtitles) + ",");
-                    lines.Add("      \"has_automap\": " + NullableBool(fmd.HasAutomap) + ",");
-                    lines.Add("      \"has_movies\": " + NullableBool(fmd.HasMovies) + ",");
-                    lines.Add("      \"has_map\": " + NullableBool(fmd.HasMap));
-                    lines.Add("    }");
-                    lines.Add("  }");
-                    lines.Add("}" + (scannedI == fmDataList.Count - 1 ? "" : ","));
-                }
-
-                File.WriteAllLines(Path.Combine(OutputDirTextBox.Text, JsonFile), lines, Encoding.UTF8);
+#if false
+                WriteJson_Manual(lines, fmDataList);
+#else
+                WriteJson_Lib(fmDataList);
+#endif
             }
             catch (Exception ex)
             {
@@ -500,6 +427,183 @@ namespace FMScanner_GUI
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
+        }
+
+        private void WriteJson_Manual(List<string> lines, List<ScannedFMDataAndError> fmDataList)
+        {
+            static string NullableBool(bool? value)
+            {
+                return value switch
+                {
+                    true => "true",
+                    false => "false",
+                    _ => "null"
+                };
+            }
+
+            static string NullableDateTimeToUTC(DateTime? value)
+            {
+                if (value == null)
+                {
+                    return "";
+                }
+                else
+                {
+                    var dt = (DateTime)value;
+                    return dt.ToUniversalTime().ToString("O");
+                }
+            }
+
+            for (int scannedI = 0; scannedI < fmDataList.Count; scannedI++)
+            {
+                ScannedFMDataAndError item = fmDataList[scannedI];
+
+                if (item.ScannedFMData == null) continue;
+
+                ScannedFMData fmd = item.ScannedFMData;
+
+                // TODO: We should probably use a proper JSON library to avoid problems but meh
+                lines.Add("{");
+                lines.Add("  \"name\": \"" + EscapeForJson(fmd.Title) + "\",");
+                lines.Add("  \"author\": {");
+                lines.Add("    \"name\": \"" + EscapeForJson(fmd.Author) + "\"");
+                lines.Add("  },");
+                lines.Add("  \"included_missions\": " + (fmd.MissionCount != null ? ((int)fmd.MissionCount).ToString(CultureInfo.InvariantCulture) : "") + ",");
+                lines.Add("  \"details\": {");
+                lines.Add("    \"game\": \"" + fmd.Game + "\",");
+                // TODO: This means "genre" essentially, so we could parse that from the tags string if we wanted
+                lines.Add("    \"category\": null,");
+                lines.Add("    \"languages\": [");
+                for (int langsI = 0; langsI < fmd.Languages.Length; langsI++)
+                {
+                    string lang = fmd.Languages[langsI];
+                    lines.Add("      \"" + EscapeForJson(lang) + "\"" + (langsI == fmd.Languages.Length - 1 ? "" : ","));
+                }
+                lines.Add("    ],");
+                lines.Add("    \"version\": \"" + EscapeForJson(fmd.Version) + "\",");
+                lines.Add("    \"newdark\": {");
+                lines.Add("      \"is_required\": " + NullableBool(fmd.NewDarkRequired) + ",");
+                lines.Add("      \"minimum_required_version\": \"" + EscapeForJson(fmd.NewDarkMinRequiredVersion) + "\"");
+                lines.Add("    },");
+                lines.Add("    \"original_release_date\": null,");
+                lines.Add("    \"last_update_date\": \"" + NullableDateTimeToUTC(fmd.LastUpdateDate) + "\",");
+                lines.Add("    \"characteristics\": {");
+                lines.Add("      \"has_custom_scripts\": " + NullableBool(fmd.HasCustomScripts) + ",");
+                lines.Add("      \"has_custom_textures\": " + NullableBool(fmd.HasCustomTextures) + ",");
+                lines.Add("      \"has_custom_sounds\": " + NullableBool(fmd.HasCustomSounds) + ",");
+                lines.Add("      \"has_custom_objects\": " + NullableBool(fmd.HasCustomObjects) + ",");
+                lines.Add("      \"has_custom_creatures\": " + NullableBool(fmd.HasCustomCreatures) + ",");
+                lines.Add("      \"has_custom_motions\": " + NullableBool(fmd.HasCustomMotions) + ",");
+                lines.Add("      \"has_custom_subtitles\": " + NullableBool(fmd.HasCustomSubtitles) + ",");
+                lines.Add("      \"has_automap\": " + NullableBool(fmd.HasAutomap) + ",");
+                lines.Add("      \"has_movies\": " + NullableBool(fmd.HasMovies) + ",");
+                lines.Add("      \"has_map\": " + NullableBool(fmd.HasMap));
+                lines.Add("    }");
+                lines.Add("  }");
+                lines.Add("}" + (scannedI == fmDataList.Count - 1 ? "" : ","));
+            }
+
+            File.WriteAllLines(Path.Combine(OutputDirTextBox.Text, JsonFile), lines, Encoding.UTF8);
+        }
+
+        internal static bool TryGetCatAndTag(string item, out string cat, out string tag)
+        {
+            switch (item.CountCharsUpToAmount(':', 2))
+            {
+                case > 1:
+                    cat = "";
+                    tag = "";
+                    return false;
+                case 1:
+                    int index = item.IndexOf(':');
+                    cat = item.Substring(0, index).Trim();
+                    // Save an alloc if we're ascii lowercase already (case conversion always allocs, even if
+                    // the new string is the same as the old)
+                    if (!cat.IsAsciiLower()) cat = cat.ToLowerInvariant();
+                    tag = item.Substring(index + 1).Trim();
+                    break;
+                default:
+                    cat = "misc";
+                    tag = item.Trim();
+                    break;
+            }
+
+            return true;
+        }
+
+        private static string[] ParseGenres(string tags)
+        {
+            var list = new List<string>();
+
+            string[] tagsArray = tags.Split(CA_CommaSemicolon, StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 0; i < tagsArray.Length; i++)
+            {
+                if (!TryGetCatAndTag(tagsArray[i], out string cat, out string tag) ||
+                    cat.IsEmpty() || tag.IsEmpty())
+                {
+                    continue;
+                }
+
+                if (cat.EqualsI("genre"))
+                {
+                    list.Add(tag);
+                }
+            }
+
+            return list.Count > 0 ? list.ToArray() : new[] { "" };
+        }
+
+        private void WriteJson_Lib(List<ScannedFMDataAndError> fmDataList)
+        {
+            var jsonData = new List<JSON_Object>();
+
+            for (int scannedI = 0; scannedI < fmDataList.Count; scannedI++)
+            {
+                ScannedFMDataAndError item = fmDataList[scannedI];
+
+                if (item.ScannedFMData == null) continue;
+
+                ScannedFMData fmd = item.ScannedFMData;
+
+                var obj = new JSON_Object
+                {
+                    name = fmd.Title,
+                    author = fmd.Author,
+                    type = fmd.Type.ToString(),
+                    included_missions = fmd.MissionCount ?? 0,
+                    details =
+                    {
+                        game = fmd.Game.ToString(),
+                        categories = ParseGenres(fmd.TagsString),
+                        languages = fmd.Languages.ToArray(),
+                        version = fmd.Version,
+                        newdark =
+                        {
+                            is_required = fmd.NewDarkRequired ?? false,
+                            minimum_required_version = fmd.NewDarkMinRequiredVersion
+                        },
+                        last_update_date = fmd.LastUpdateDate,
+                        characteristics =
+                        {
+                            has_custom_scripts = fmd.HasCustomScripts == true,
+                            has_custom_textures = fmd.HasCustomTextures == true,
+                            has_custom_sounds = fmd.HasCustomSounds == true,
+                            has_custom_objects = fmd.HasCustomObjects == true,
+                            has_custom_creatures = fmd.HasCustomCreatures == true,
+                            has_custom_motions = fmd.HasCustomMotions == true,
+                            has_custom_subtitles = fmd.HasCustomSubtitles == true,
+                            has_automap = fmd.HasAutomap == true,
+                            has_movies = fmd.HasMovies == true,
+                            has_map = fmd.HasMap == true
+                        }
+                    }
+                };
+
+                jsonData.Add(obj);
+            }
+
+            string output = JsonConvert.SerializeObject(jsonData, Formatting.Indented);
+            File.WriteAllText(Path.Combine(OutputDirTextBox.Text, JsonFile), output, Encoding.UTF8);
         }
 
         private async void ScanButton_Click(object sender, EventArgs e)
