@@ -34,11 +34,11 @@ namespace FMScanner_GUI
         public TTLG_Thread ttlg_thread = new();
         public string[] categories = { "" };
         public NameAndUrl contest = new();
-        public string[] languages = Array.Empty<string>();
+        public string[] languages = { "" };
         public string version = "";
         public NewDark newdark = new();
-        public DateTime? original_release_date = null;
-        public DateTime? last_update_date = null;
+        public string original_release_date = "";
+        public string last_update_date = "";
         public Characteristics characteristics = new();
     }
 
@@ -62,13 +62,13 @@ namespace FMScanner_GUI
     public class DownloadMain
     {
         public Hoster hoster = new();
-        public DownloadMainReference[] references = { new DownloadMainReference() };
+        public Reference[] references = { new Reference() };
     }
 
     public class DownloadAlternative
     {
         public Hoster hoster = new();
-        public DownloadAlternativeReference[] references = { new DownloadAlternativeReference() };
+        public Reference[] references = { new Reference() };
     }
 
     public class Hoster
@@ -77,13 +77,7 @@ namespace FMScanner_GUI
         public string url = "";
     }
 
-    public class DownloadMainReference
-    {
-        public ulong size = 0;
-        public string url = "";
-    }
-
-    public class DownloadAlternativeReference
+    public class Reference
     {
         public string language = "";
         public ulong size = 0;
@@ -109,13 +103,21 @@ namespace FMScanner_GUI
         public string url = "";
     }
 
+    public class Series
+    {
+        public string name = "";
+        public int part = 0;
+        public int total_missions = 0;
+    }
+
     public class JSON_Object
     {
-        public bool draft = false;
+        public bool draft = true;
         public string name = "";
         public string author = "";
         public string type = "";
-        public int included_missions = 0;
+        public Series series = new();
+        //public int included_missions = 0;
         public Details details = new();
         public Extras extras = new();
     }

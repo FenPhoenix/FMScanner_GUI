@@ -429,6 +429,19 @@ namespace FMScanner_GUI
             }
         }
 
+        private static string NullableDateTimeToUTC(DateTime? value)
+        {
+            if (value == null)
+            {
+                return "";
+            }
+            else
+            {
+                var dt = (DateTime)value;
+                return dt.ToUniversalTime().ToString("O");
+            }
+        }
+
         private void WriteJson_Manual(List<string> lines, List<ScannedFMDataAndError> fmDataList)
         {
             static string NullableBool(bool? value)
@@ -439,19 +452,6 @@ namespace FMScanner_GUI
                     false => "false",
                     _ => "null"
                 };
-            }
-
-            static string NullableDateTimeToUTC(DateTime? value)
-            {
-                if (value == null)
-                {
-                    return "";
-                }
-                else
-                {
-                    var dt = (DateTime)value;
-                    return dt.ToUniversalTime().ToString("O");
-                }
             }
 
             for (int scannedI = 0; scannedI < fmDataList.Count; scannedI++)
@@ -553,6 +553,8 @@ namespace FMScanner_GUI
             return list.Count > 0 ? list.ToArray() : new[] { "" };
         }
 
+        private string SingleOrMultiple(FMType value) => value == FMType.FanMission ? "single" : "multiple";
+
         private void WriteJson_Lib(List<ScannedFMDataAndError> fmDataList)
         {
             var jsonData = new List<JSON_Object>();
@@ -569,8 +571,8 @@ namespace FMScanner_GUI
                 {
                     name = fmd.Title,
                     author = fmd.Author,
-                    type = fmd.Type.ToString(),
-                    included_missions = fmd.MissionCount ?? 0,
+                    type = SingleOrMultiple(fmd.Type),
+                    //included_missions = fmd.MissionCount ?? 0,
                     details =
                     {
                         game = fmd.Game.ToString(),
@@ -582,7 +584,7 @@ namespace FMScanner_GUI
                             is_required = fmd.NewDarkRequired ?? false,
                             minimum_required_version = fmd.NewDarkMinRequiredVersion
                         },
-                        last_update_date = fmd.LastUpdateDate,
+                        last_update_date = NullableDateTimeToUTC(fmd.LastUpdateDate),
                         characteristics =
                         {
                             has_custom_scripts = fmd.HasCustomScripts == true,
