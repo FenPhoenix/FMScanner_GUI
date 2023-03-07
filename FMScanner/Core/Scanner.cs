@@ -355,6 +355,8 @@ namespace FMScanner
                 _readmeFiles.Clear();
                 _fmDirFileInfos.Clear();
                 _ss2Fingerprinted = false;
+                _fmIsZip = false;
+                _fmIsSevenZip = false;
 
                 bool nullAlreadyAdded = false;
 
