@@ -295,10 +295,7 @@ namespace FMScanner_GUI
                 if (!item.EndsWithI(".zip") && !item.EndsWithI(".7z")) continue;
                 if (IgnoreFMSelBakCheckBox.Checked && item.EndsWithI(".FMSelBak.zip")) continue;
 
-                fmsToScan.Add(new FMToScan
-                {
-                    Path = item
-                });
+                fmsToScan.Add(new FMToScan(path: item));
             }
 
             if (fmsToScan.Count == 0) return;
@@ -353,7 +350,7 @@ namespace FMScanner_GUI
                         item.Exception != null ||
                         !item.ErrorInfo.IsEmpty())
                     {
-                        if (item.Exception is FMScanner.FastZipReader.ZipCompressionMethodException)
+                        if (item.Exception is AL_Common.FastZipReader.ZipCompressionMethodException)
                         {
                             unsupportedCompressionErrors.Add((fmsToScan[i], item));
                         }

@@ -6,10 +6,21 @@
     <Nullable>enable</Nullable>
     <Configurations>Debug;Release;DebugRTFTest;ReleaseRTFTest;DebugFullTest;ReleaseFullTest</Configurations>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseRTFTest|AnyCPU'">
     <DefineConstants>TRACE;ReleaseRTFTest</DefineConstants>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseRTFTest|x86'">
+    <DefineConstants>TRACE;ReleaseRTFTest</DefineConstants>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseRTFTest|x64'">
+    <DefineConstants>TRACE;ReleaseRTFTest;X64</DefineConstants>
     <Optimize>true</Optimize>
   </PropertyGroup>
 
@@ -18,12 +29,40 @@
     <Optimize>false</Optimize>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugRTFTest|x86'">
+    <DefineConstants>TRACE;DEBUG;DebugRTFTest</DefineConstants>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugRTFTest|x64'">
+    <DefineConstants>TRACE;DEBUG;DebugRTFTest;X64</DefineConstants>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DefineConstants>TRACE;DEBUG;X64</DefineConstants>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugFullTest|AnyCPU'">
     <DefineConstants>TRACE;DEBUG;FMScanner_FullCode</DefineConstants>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugFullTest|x86'">
+    <DefineConstants>TRACE;DEBUG;FMScanner_FullCode</DefineConstants>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugFullTest|x64'">
+    <DefineConstants>TRACE;DEBUG;FMScanner_FullCode;X64</DefineConstants>
     <Optimize>false</Optimize>
   </PropertyGroup>
 
@@ -32,19 +71,30 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseFullTest|x86'">
+    <DefineConstants>TRACE;FMScanner_FullCode</DefineConstants>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseFullTest|x64'">
+    <DefineConstants>TRACE;FMScanner_FullCode;X64</DefineConstants>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="7z.Libs" Version="19.0.2" />
-    <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="2023.2.0" />
     <PackageReference Include="Nullable" Version="1.3.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Squid-Box.SevenZipSharp" Version="1.3.318" />
-    <PackageReference Include="Ude.NetStandard" Version="1.2.0" />
+    <PackageReference Include="System.Buffers" Version="4.5.1" />
+    <PackageReference Include="System.Memory" Version="4.5.5" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AL_Common\AL_Common.csproj" />
+    <ProjectReference Include="..\SharpCompress\SharpCompress.csproj" />
+    <ProjectReference Include="..\Ude\Ude.NetStandard.csproj" />
   </ItemGroup>
 
 </Project>
